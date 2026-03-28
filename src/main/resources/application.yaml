@@ -1,3 +1,37 @@
+server:
+  port: 8080
+
+services:
+  auth-server:
+    url: http://tcf5-auth-server
+
 spring:
   application:
-    name: tcf5-gateway
+    name: tcf5-gateway-server
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            - id: tcf5-auth-service-route
+              uri: lb://tcf5-auth-server
+              predicates:
+                - Path=/auth/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: TRACE
+    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: TRACE
+    org.springframework.cloud.gateway.filter: TRACE
