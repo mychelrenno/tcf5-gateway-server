@@ -21,6 +21,18 @@ spring:
               uri: lb://tcf5-auth-server
               predicates:
                 - Path=/auth/**
+            - id: tcf5-health-record-producer-route
+              uri: lb://tcf5-health-record-producer
+              predicates:
+                - Path=/health-records/**
+            - id: tcf5-health-record-transformer-route
+              uri: lb://tcf5-health-record-transformer
+              predicates:
+                - Path=/health-records/**
+            - id: tcf5-health-record-provider-route
+              uri: lb://tcf5-health-record-provider
+              predicates:
+                - Path=/health-records/**
 
 eureka:
   client:
